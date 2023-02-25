@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ApiMovies.Common.Applications.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ApiMovies.Common.Applications.Implementacion
@@ -7,7 +8,7 @@ namespace ApiMovies.Common.Applications.Implementacion
     {
         public static void AddApplication(this IServiceCollection Services, IConfiguration Configuration)
         {
-            //Services.AddScoped<IConceptoRepository, ConceptoRepository>();
+            Services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
         }
     }
 }

@@ -7,5 +7,6 @@
         public string ErrorMessage { get; set; }
         public TObject DirectObject { get; set; }
         public List<TObject> ListObjet { get; set; }
+        public ICollection<TObject> MyCollection { get; set; }
     }
 }
