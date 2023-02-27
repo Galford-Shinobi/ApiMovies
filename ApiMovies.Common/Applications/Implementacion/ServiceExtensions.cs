@@ -9,6 +9,7 @@ namespace ApiMovies.Common.Applications.Implementacion
         public static void AddApplication(this IServiceCollection Services, IConfiguration Configuration)
         {
             Services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
+            Services.AddScoped<IPeliculaRepositorio, PeliculaRepositorio>();
         }
     }
 }

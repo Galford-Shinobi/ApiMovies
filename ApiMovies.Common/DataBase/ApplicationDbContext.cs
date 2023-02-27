@@ -9,6 +9,7 @@ namespace ApiMovies.Common.DataBase
         {}
         //Agregar los modelos aquí
         public DbSet<Categoria> Categoria { get; set; }
+        public DbSet<Pelicula> Pelicula { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
