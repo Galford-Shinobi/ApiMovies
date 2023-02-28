@@ -3,7 +3,6 @@ using ApiMovies.Common.Dtos;
 using ApiMovies.Common.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiMovies.Controllers
@@ -83,8 +82,8 @@ namespace ApiMovies.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var DtoResult =  await _categoriaRepositorio.ExisteCategoriaAsync(crearCategoriaDto.Nombre);
-            if (!DtoResult.IsSuccess)
+            var DtoResult = await _categoriaRepositorio.ExisteCategoriaAsync(crearCategoriaDto.Nombre);
+            if (DtoResult.IsSuccess)
             {
                 ModelState.AddModelError("", "La categoría ya existe");
                 return StatusCode(404, ModelState);

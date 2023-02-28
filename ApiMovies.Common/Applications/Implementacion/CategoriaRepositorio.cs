@@ -21,8 +21,8 @@ namespace ApiMovies.Common.Applications.Implementacion
             {
                 categoria.FechaCreacion = DateTime.Now;
                 _applicationDbContext.Categoria.Update(categoria);
-                await GuardarAsync();
-                return new GenericResponse<Categoria> { IsSuccess = await GuardarAsync(), };
+               
+                return new GenericResponse<Categoria> { IsSuccess = await GuardarAsync(),DirectObject = categoria };
             }
             catch (DbUpdateException dbUpdateException)
             {
@@ -152,7 +152,7 @@ namespace ApiMovies.Common.Applications.Implementacion
 
 
                 var result = await _applicationDbContext.Categoria.FirstOrDefaultAsync(c => c.Id == categorId);
-                return new GenericResponse<Categoria> { IsSuccess = true, };
+                return new GenericResponse<Categoria> { IsSuccess = true,DirectObject = result };
             }
             catch (Exception exception)
             {
