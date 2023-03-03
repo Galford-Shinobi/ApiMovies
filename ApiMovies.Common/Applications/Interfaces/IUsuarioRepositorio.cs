@@ -6,13 +6,13 @@ namespace ApiMovies.Common.Applications.Interfaces
 {
     public interface IUsuarioRepositorio
     {
-        ICollection<Usuario> GetUsuarios();
-        Usuario GetUsuario(int usuarioId);
-        bool IsUniqueUser(string usuario);
-        Task<GenericResponse<Usuario>> IsUniqueUserAsync(string usuario);
-        Task<GenericResponse<Usuario>> GetUsuariosAsync();
-        Task<GenericResponse<Usuario>> GetUsuarioAsync(int usuarioId);
-        Task<GenericResponse<UsuarioLoginRespuestaDto>> LoginAsync(UsuarioLoginDto usuarioLoginDto);
-        Task<GenericResponse<Usuario>> RegistroAsync(UsuarioRegistroDto usuarioRegistroDto);
+        ICollection<AppUsuario> GetUsuarios();
+        AppUsuario GetAppUsuario(string UsuarioId);
+        bool IsUniqueUser(string Usuario);
+        Task<GenericResponse<AppUsuario>> IsUniqueUserAsync(string Usuario);
+        Task<GenericResponse<AppUsuario>> GetUsuariosAsync();
+        Task<GenericResponse<AppUsuario>> GetUsuarioAsync(string AppUsuarioId);
+        Task<GenericResponse<UsuarioLoginRespuestaDto>> LoginAsync(UsuarioLoginDto UsuarioLoginDto);
+        Task<GenericResponse<UsuarioDatosDto>> RegistroAsync(UsuarioRegistroDto UsuarioRegistroDto);
     }
 }

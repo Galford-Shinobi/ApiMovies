@@ -8,6 +8,7 @@ namespace ApiMovies.Common.Entities
         public string Nombre { get; set; }
 
         public string RutaImagen { get; set; }
+        public byte[] ByteImagen { get; set; }
         public string Descripcion { get; set; }
         public int Duracion { get; set; }
 

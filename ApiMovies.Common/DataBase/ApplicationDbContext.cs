@@ -1,9 +1,10 @@
 ﻿using ApiMovies.Common.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiMovies.Common.DataBase
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<AppUsuario>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {}
@@ -11,6 +12,7 @@ namespace ApiMovies.Common.DataBase
         public DbSet<Categoria> Categoria { get; set; }
         public DbSet<Pelicula> Pelicula { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<AppUsuario> AppUsuario { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

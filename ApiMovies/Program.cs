@@ -1,7 +1,9 @@
 using ApiMovies.Common.Applications.Implementacion;
 using ApiMovies.Common.DataBase;
+using ApiMovies.Common.Entities;
 using ApiMovies.PeliculasMappers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -18,6 +20,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(opciones =>
 {
     opciones.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSqlServerConnection"));
 });
+
+//Soporte para autenticación con .NET Identity
+builder.Services.AddIdentity<AppUsuario, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.Configure<IISServerOptions>(options =>
+{
+    options.AutomaticAuthentication = false;
+});
+
 var key = builder.Configuration.GetValue<string>("ApiSettings:Secreta");
 //Agregar el AutoMapper
 builder.Services.AddAutoMapper(typeof(PeliculasMapper));
@@ -97,10 +107,27 @@ builder.Services.AddCors(p => p.AddPolicy("PolicyCors", build =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
+
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
+//else
+if(app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+else
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();

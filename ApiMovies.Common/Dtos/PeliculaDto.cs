@@ -9,6 +9,7 @@ namespace ApiMovies.Common.Dtos
         [MaxLength(150, ErrorMessage = "El campo {0} debe tener una longitud máxima de {1} caracteres")]
         public string Nombre { get; set; }
         public string RutaImagen { get; set; }
+        public byte[] ByteImagen { get; set; }
         [Required(ErrorMessage = "La descripción es obligatoria")]
         [MaxLength(150, ErrorMessage = "El campo {0} debe tener una longitud máxima de {1} caracteres")]
         public string Descripcion { get; set; }

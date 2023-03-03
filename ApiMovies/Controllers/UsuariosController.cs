@@ -35,24 +35,24 @@ namespace ApiMovies.Controllers
         {
             var listaUsuarios = _usuarioRepositorio.GetUsuarios();
 
-            var listaUsuariosDto = new List<UsuarioDto>();
+            var listaUsuariosDto = new List<UsuarioDatosDto>();
 
             foreach (var lista in listaUsuarios)
             {
-                listaUsuariosDto.Add(_mapper.Map<UsuarioDto>(lista));
+                listaUsuariosDto.Add(_mapper.Map<UsuarioDatosDto>(lista));
             }
             return Ok(listaUsuariosDto);
         }
 
-        //[Authorize(Roles = "admin")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [HttpGet("{usuarioId:int}", Name = "GetUsuario")]
+        [Authorize(Roles = "admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet("{usuarioId}", Name = "GetUsuario")]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetUsuario(int usuarioId)
+        public async Task<IActionResult> GetUsuario(string usuarioId)
         {
             var itemUsuario = await _usuarioRepositorio.GetUsuarioAsync(usuarioId);
 

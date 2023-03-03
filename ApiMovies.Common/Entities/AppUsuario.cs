@@ -1,7 +1,10 @@
-﻿namespace ApiMovies.Common.Entities
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace ApiMovies.Common.Entities
 {
-    public class AppUsuario
+    public class AppUsuario : IdentityUser
     {
-        public string Nombre { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }
