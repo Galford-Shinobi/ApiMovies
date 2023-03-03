@@ -9,6 +9,7 @@ namespace ApiMovies.Common.Applications.Interfaces
         ICollection<Usuario> GetUsuarios();
         Usuario GetUsuario(int usuarioId);
         bool IsUniqueUser(string usuario);
+        Task<GenericResponse<Usuario>> IsUniqueUserAsync(string usuario);
         Task<GenericResponse<Usuario>> GetUsuariosAsync();
         Task<GenericResponse<Usuario>> GetUsuarioAsync(int usuarioId);
         Task<GenericResponse<UsuarioLoginRespuestaDto>> LoginAsync(UsuarioLoginDto usuarioLoginDto);

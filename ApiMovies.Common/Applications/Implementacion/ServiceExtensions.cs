@@ -10,6 +10,7 @@ namespace ApiMovies.Common.Applications.Implementacion
         {
             Services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
             Services.AddScoped<IPeliculaRepositorio, PeliculaRepositorio>();
+            Services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
         }
     }
 }

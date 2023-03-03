@@ -9,7 +9,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using XAct.Users;
 using XSystem.Security.Cryptography;
 
 namespace ApiMovies.Common.Applications.Implementacion
@@ -35,15 +34,15 @@ namespace ApiMovies.Common.Applications.Implementacion
         {
             try
             {
-                var Result = await _applicationDbContext.Usuario.FirstOrDefaultAsync(u => u.Password.Equals(usuarioId));
+                var Result = await _applicationDbContext.Usuario.FirstOrDefaultAsync(u => u.Id.Equals(usuarioId));
 
-                if (Result == null) { return new GenericResponse<Usuario> { IsSuccess = false, ErrorMessage="No Data"}; }
+                if (Result == null) { return new GenericResponse<Usuario> { IsSuccess = false, ErrorMessage = "No Data" }; }
 
-                return new GenericResponse<Usuario> {IsSuccess = true, DirectObject = Result, };
+                return new GenericResponse<Usuario> { IsSuccess = true, DirectObject = Result, };
             }
             catch (Exception exception)
             {
-                return new GenericResponse<Usuario>{ IsSuccess = false, ErrorMessage = exception.Message};
+                return new GenericResponse<Usuario> { IsSuccess = false, ErrorMessage = exception.Message };
             }
         }
 
@@ -61,7 +60,7 @@ namespace ApiMovies.Common.Applications.Implementacion
                 {
                     return new GenericResponse<Usuario> { IsSuccess = false, ErrorMessage = "No Data" };
                 }
-                return new GenericResponse<Usuario> { IsSuccess = true,MyCollection = ListResult };
+                return new GenericResponse<Usuario> { IsSuccess = true, MyCollection = ListResult };
             }
             catch (Exception exception)
             {
@@ -71,7 +70,7 @@ namespace ApiMovies.Common.Applications.Implementacion
 
         public bool IsUniqueUser(string usuario)
         {
-             var usuariobd = _applicationDbContext.Usuario.FirstOrDefault(u => u.NombreUsuario == usuario);
+            var usuariobd = _applicationDbContext.Usuario.FirstOrDefault(u => u.NombreUsuario == usuario);
             if (usuariobd == null)
             {
                 return true;
@@ -94,13 +93,13 @@ namespace ApiMovies.Common.Applications.Implementacion
                 //Validamos si el usuario no existe con la combinación de usuario y contraseña correcta
                 if (usuario == null)
                 {
-                    var user= new UsuarioLoginRespuestaDto()
+                    var user = new UsuarioLoginRespuestaDto()
                     {
                         Token = "",
                         Usuario = null
                     };
 
-                    return new GenericResponse<UsuarioLoginRespuestaDto> { IsSuccess = false, DirectObject = user};
+                    return new GenericResponse<UsuarioLoginRespuestaDto> { IsSuccess = false, DirectObject = user };
                 }
 
                 //Aquí existe el usuario entonces podemos procesar el login      
@@ -108,9 +107,9 @@ namespace ApiMovies.Common.Applications.Implementacion
                 var SecretKey = _configuration["ApiSettings:Secreta"];
                 var Issuer = _configuration["ApiSettings:Issuer"];
                 var Audience = _configuration["ApiSettings:Audience"];
-                
+
                 var JwtSecurityToken = GenerateJWTToken(usuario);
-                
+
                 var key = Encoding.ASCII.GetBytes(claveSecreta);
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
@@ -126,7 +125,8 @@ namespace ApiMovies.Common.Applications.Implementacion
 
                 UsuarioLoginRespuestaDto usuarioLoginRespuestaDto = new UsuarioLoginRespuestaDto()
                 {
-                    Token = manejadorToken.WriteToken(token),
+                    //Token = manejadorToken.WriteToken(token),
+                    Token = JwtSecurityToken,
                     Usuario = usuario
                 };
 
@@ -144,7 +144,8 @@ namespace ApiMovies.Common.Applications.Implementacion
             {
                 var passwordEncriptado = obtenermd5(usuarioRegistroDto.Password);
 
-                Usuario usuario = new Usuario(){
+                Usuario usuario = new Usuario()
+                {
                     NombreUsuario = usuarioRegistroDto.NombreUsuario,
                     Password = passwordEncriptado,
                     Nombre = usuarioRegistroDto.Nombre,
@@ -152,14 +153,14 @@ namespace ApiMovies.Common.Applications.Implementacion
                 };
 
                 _applicationDbContext.Usuario.Add(usuario);
-               
+
                 usuario.Password = passwordEncriptado;
-                
-                return new GenericResponse<Usuario> { IsSuccess= await GuardarAsync(), DirectObject = usuario };
+
+                return new GenericResponse<Usuario> { IsSuccess = await GuardarAsync(), DirectObject = usuario };
             }
             catch (Exception exception)
             {
-                return new GenericResponse<Usuario> { IsSuccess = false,ErrorMessage =exception.InnerException.Message };
+                return new GenericResponse<Usuario> { IsSuccess = false, ErrorMessage = exception.InnerException.Message };
             }
         }
 
@@ -204,6 +205,14 @@ namespace ApiMovies.Common.Applications.Implementacion
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-
+        public async Task<GenericResponse<Usuario>> IsUniqueUserAsync(string usuario)
+        {
+            var _Any = await _applicationDbContext.Usuario.AnyAsync(u => u.NombreUsuario.Equals(usuario));
+            if (_Any)
+            {
+                return new GenericResponse<Usuario> {IsSuccess = false, ErrorMessage=$"hay registros en el sistema con este usuario {usuario}" };
+            }
+            return new GenericResponse<Usuario> { IsSuccess = true };
+        }
     }
 }

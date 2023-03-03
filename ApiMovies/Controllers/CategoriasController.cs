@@ -2,6 +2,7 @@
 using ApiMovies.Common.Dtos;
 using ApiMovies.Common.Entities;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,8 +24,8 @@ namespace ApiMovies.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        [ResponseCache(Duration = 20)]
-        //[ResponseCache(CacheProfileName = "PorDefecto20Segundos")]
+        //[ResponseCache(Duration = 20)]
+        [ResponseCache(CacheProfileName = "PorDefecto20Segundos")]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCategorias()
@@ -47,7 +48,9 @@ namespace ApiMovies.Controllers
 
         [AllowAnonymous]
         [HttpGet("{categoriaId:int}", Name = "GetCategoria")]
-        //[ResponseCache(CacheProfileName = "PorDefecto20Segundos")]
+        //[ResponseCache(Duration = 30)]
+        //[ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        [ResponseCache(CacheProfileName = "PorDefecto20Segundos")]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -66,6 +69,7 @@ namespace ApiMovies.Controllers
         }
 
         //[Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(CategoriaDto))]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -102,6 +106,7 @@ namespace ApiMovies.Controllers
         }
 
         //[Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPatch("{categoriaId:int}", Name = "ActualizarPatchCategoria")]
         [ProducesResponseType(201, Type = typeof(CategoriaDto))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -129,6 +134,7 @@ namespace ApiMovies.Controllers
         }
 
         //[Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpDelete("{categoriaId:int}", Name = "BorrarCategoria")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
